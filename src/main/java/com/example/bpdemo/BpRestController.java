@@ -4,6 +4,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -14,18 +15,50 @@ public class BpRestController {
 	private String firstName;
 	private String lastName;
 
-	private String template = "%s %s says: Hello, %s!";
+	private String helloTemplate = "%s %s says: Hello, %s!";
+	private String goodbyeTemplate = "%s says: Good bye, %s!";
 	private static int counter = 0;
 
+	/**
+	 * uses GET and PathVariable
+	 * @param userName
+	 * @return
+	 */
 	@RequestMapping(method=RequestMethod.GET, value="/sayHello/{userName}")
 	public Greeting sayHello(@PathVariable(name="userName") String userName) {
-		return new Greeting(counter++, String.format(template, firstName, lastName, userName));
+		return new Greeting(counter++, String.format(helloTemplate, firstName, lastName, userName));
+	}
+	
+	/**
+	 * uses GET and RequestParam
+	 * @param userName
+	 * @return
+	 */
+	@RequestMapping(method=RequestMethod.GET, value="/sayGoodbye")
+	public Greeting sayGoodbye(@RequestParam(name="userName") String userName) {
+		return new Greeting(counter++, String.format(goodbyeTemplate, firstName, userName));
 	}
 
-	@RequestMapping(method=RequestMethod.POST, value="/square/{num}")
+	/**
+	 * Accepts both GET and POST and uses PathVariable
+	 * @param num
+	 * @return
+	 */
+	@RequestMapping(value="/square/{num}")
 	public String square(@PathVariable(name="num") int num) {
 		int sq = num * num;
 		return "square of " + num + " = " + sq;
+	}
+	
+	/**
+	 * Accepts only POST and uses PathVariable
+	 * @param num
+	 * @return
+	 */
+	@RequestMapping(method=RequestMethod.POST, value="/cube/{num}")
+	public String cube(@PathVariable(name="num") int num) {
+		int cube = num * num * num;
+		return "square of " + num + " = " + cube;
 	}
 
 	/**
