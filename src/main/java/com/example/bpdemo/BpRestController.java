@@ -36,6 +36,7 @@ public class BpRestController {
 	 */
 	@RequestMapping(method=RequestMethod.GET, value="/sayGoodbye")
 	public Greeting sayGoodbye(@RequestParam(name="userName") String userName) {
+	    //it is just a trigger comment
 		return new Greeting(counter++, String.format(goodbyeTemplate, firstName, userName));
 	}
 
