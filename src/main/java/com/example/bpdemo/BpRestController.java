@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.slf4j.*;
 
 @RestController
 @RequestMapping("/api")
@@ -18,6 +19,8 @@ public class BpRestController {
 	private String helloTemplate = "%s %s says: Hello, %s!";
 	private String goodbyeTemplate = "%s says: Good bye, %s!";
 	private static int counter = 0;
+	
+	private final Logger logger = LoggerFactory.getLogger(BpRestController.class);
 
 	/**
 	 * uses GET and PathVariable
@@ -26,6 +29,7 @@ public class BpRestController {
 	 */
 	@RequestMapping(method=RequestMethod.GET, value="/sayHello/{userName}")
 	public Greeting sayHello(@PathVariable(name="userName") String userName) {
+		logger.info("sayHello invoked with userName: " + userName);
 		return new Greeting(counter++, String.format(helloTemplate, firstName, lastName, userName));
 	}
 	
@@ -37,6 +41,7 @@ public class BpRestController {
 	@RequestMapping(method=RequestMethod.GET, value="/sayGoodbye")
 	public Greeting sayGoodbye(@RequestParam(name="userName") String userName) {
 	    //it is just a trigger comment
+		logger.info("sayGoodbye invoked with userName:" + userName);
 		return new Greeting(counter++, String.format(goodbyeTemplate, firstName, userName));
 	}
 
@@ -47,6 +52,7 @@ public class BpRestController {
 	 */
 	@RequestMapping(value="/square/{num}")
 	public String square(@PathVariable(name="num") int num) {
+		logger.info("square invoked with num: " + num);
 		int sq = num * num;
 		return "square of " + num + " = " + sq;
 	}
@@ -58,6 +64,7 @@ public class BpRestController {
 	 */
 	@RequestMapping(method=RequestMethod.POST, value="/cube/{num}")
 	public String cube(@PathVariable(name="num") int num) {
+		logger.info("cube invoked with num: " + num);
 		int cube = num * num * num;
 		return "square of " + num + " = " + cube;
 	}
